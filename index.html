@@ -44,18 +44,17 @@ h1 { margin:0; }
 
 <script>
 function buyNow(productName, price) {
-    const phoneNumber = '+212617475694'; // your real WhatsApp number with country code
+    const phoneNumber = '+212617475694'; // correct WhatsApp format
     const messageBase = `Hello! I want to buy ${productName} for ${price} DH.`;
 
-    // Open WhatsApp immediately (Safari allows this)
+    // Open WhatsApp immediately
     const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(messageBase)}`;
     window.location.href = whatsappURL;
 
-    // Optional: get user location asynchronously (won't block WhatsApp)
+    // Optional: get user location asynchronously
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position){
             console.log("User location:", position.coords.latitude, position.coords.longitude);
-            // You could send this info to your server if needed
         });
     }
 }
