@@ -25,46 +25,46 @@ h1 { margin:0; }
 </header>
 
 <div class="store">
-<div class="product">
-<img src="https://via.placeholder.com/200" alt="AirPods Pro">
-<h2>AirPods Pro</h2>
-<p>Price: 149 DH</p>
-<button class="buy-btn" onclick="buyNow('AirPods Pro',149)">Buy Now</button>
-<p class="notice">*Your location will be sent to WhatsApp to complete the order.*</p>
-</div>
+  <div class="product">
+    <img src="https://via.placeholder.com/200" alt="AirPods Pro">
+    <h2>AirPods Pro</h2>
+    <p>Price: 149 DH</p>
+    <button class="buy-btn" onclick="buyNow('AirPods Pro',149)">Buy Now</button>
+    <p class="notice">*Your location will be requested to complete the order.*</p>
+  </div>
 
-<div class="product">
-<img src="https://via.placeholder.com/200" alt="Air Max">
-<h2>Air Max</h2>
-<p>Price: 200 DH</p>
-<button class="buy-btn" onclick="buyNow('Air Max',200)">Buy Now</button>
-<p class="notice">*Your location will be sent to WhatsApp to complete the order.*</p>
-</div>
+  <div class="product">
+    <img src="https://via.placeholder.com/200" alt="Air Max">
+    <h2>Air Max</h2>
+    <p>Price: 200 DH</p>
+    <button class="buy-btn" onclick="buyNow('Air Max',200)">Buy Now</button>
+    <p class="notice">*Your location will be requested to complete the order.*</p>
+  </div>
 </div>
 
 <script>
 function buyNow(productName, price) {
-    const phoneNumber = '+212617475694'; // your WhatsApp number
-    let message = `Hello! I want to buy ${productName} for ${price} DH.`;
+  const phoneNumber = '+212617475694'; // your WhatsApp number
+  const baseMessage = `Hello! I want to buy ${productName} for ${price} DH.`;
 
-    // Open WhatsApp immediately
-    const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-    window.location.href = whatsappURL;
-
-    // Get location asynchronously
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position){
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const locationLink = `https://www.google.com/maps?q=${lat},${lon}`;
-            const messageWithLocation = `${message} My location: ${locationLink}`;
-            const whatsappURLLocation = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(messageWithLocation)}`;
-            // Open WhatsApp with location after 2 seconds
-            setTimeout(function(){
-                window.location.href = whatsappURLLocation;
-            }, 2000);
-        });
-    }
+  // Ask for location first
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const locationLink = `https://www.google.com/maps?q=${lat},${lon}`;
+        const message = `${baseMessage} My location: ${locationLink}`;
+        const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+        window.location.href = whatsappURL; // open WhatsApp
+      },
+      function(error) {
+        alert("Could not get your location. Please allow location access and try again.");
+      }
+    );
+  } else {
+    alert("Your browser does not support location.");
+  }
 }
 </script>
 
