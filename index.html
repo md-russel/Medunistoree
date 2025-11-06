@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AirPods & Air Max Store</title>
+<title>Medunistoree Store</title>
 <style>
 body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; color:#333; }
 header { background:#111; color:white; text-align:center; padding:20px 0; }
@@ -21,7 +21,7 @@ h1 { margin:0; }
 <body>
 
 <header>
-<h1>AirPods & Air Max Store</h1>
+<h1>Medunistoree Store</h1>
 </header>
 
 <div class="store">
@@ -44,24 +44,19 @@ h1 { margin:0; }
 
 <script>
 function buyNow(productName, price) {
-    const phoneNumber = '+1234567890'; // placeholder number
+    const phoneNumber = '+1234567890'; // replace with your real number
+    const messageBase = `Hello! I want to buy ${productName} for ${price} DH.`;
+
+    // Open WhatsApp immediately (Safari allows this)
+    const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(messageBase)}`;
+    window.location.href = whatsappURL;
+
+    // Optional: get user location (won't block WhatsApp)
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position){
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            const locationLink = `https://www.google.com/maps?q=${lat},${lon}`;
-            const message = `Hello! I want to buy ${productName} for ${price} DH. My location: ${locationLink}`;
-            const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-            window.open(whatsappURL, '_blank');
-        }, function(){
-            const message = `Hello! I want to buy ${productName} for ${price} DH. Location not shared.`;
-            const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-            window.open(whatsappURL, '_blank');
+            console.log("User location:", position.coords.latitude, position.coords.longitude);
+            // You could send this info somewhere if needed
         });
-    } else {
-        const message = `Hello! I want to buy ${productName} for ${price} DH. Location not supported.`;
-        const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-        window.open(whatsappURL, '_blank');
     }
 }
 </script>
