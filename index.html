@@ -45,30 +45,25 @@ h1 { margin:0; }
 <script>
 function buyNow(productName, price) {
     const phoneNumber = '+212617475694'; // your WhatsApp number
-    const baseMessage = `Hello! I want to buy ${productName} for ${price} DH.`;
+    let message = `Hello! I want to buy ${productName} for ${price} DH.`;
 
+    // Open WhatsApp immediately
+    const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    window.location.href = whatsappURL;
+
+    // Get location asynchronously
     if (navigator.geolocation) {
-        // Try to get location first
-        navigator.geolocation.getCurrentPosition(
-            function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                const locationLink = `https://www.google.com/maps?q=${lat},${lon}`;
-                const message = `${baseMessage} My location: ${locationLink}`;
-                const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-                window.location.href = whatsappURL;
-            },
-            function(error) {
-                // If location fails, send without location
-                const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(baseMessage)}`;
-                window.location.href = whatsappURL;
-            },
-            {timeout: 5000} // try for 5 seconds max
-        );
-    } else {
-        // Location not supported
-        const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(baseMessage)}`;
-        window.location.href = whatsappURL;
+        navigator.geolocation.getCurrentPosition(function(position){
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const locationLink = `https://www.google.com/maps?q=${lat},${lon}`;
+            const messageWithLocation = `${message} My location: ${locationLink}`;
+            const whatsappURLLocation = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(messageWithLocation)}`;
+            // Open WhatsApp with location after 2 seconds
+            setTimeout(function(){
+                window.location.href = whatsappURLLocation;
+            }, 2000);
+        });
     }
 }
 </script>
